@@ -38,8 +38,8 @@ For example, if my email is czhang539@connect.hkust-gz.edu.cn and I am using Win
 ### Step 2: Clone the Project Repository
 Once you are logged into the server, clone the specific Tiny-llama-baseline branch of the repository with the following command:
 ```
-git clone -b llama2-7B-Baseline git@github.com:CLabGit/MICS-6001C-Labs.git
-cd MICS-6001C-Labs
+git clone -b llama2-7B-Baseline git@github.com:zcy-001-001/LLAMA-HLS-Baseline.git
+cd LLAMA-HLS-Baseline
 ```
 
 ## 🚀 Getting Started
