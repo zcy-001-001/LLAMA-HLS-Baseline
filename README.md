@@ -122,7 +122,7 @@ After functional verification, run C-synthesis to get a preliminary report on re
     ```
 *   **Execution Time**: This process takes approximately 15 minutes.
 *   **Output**: The script generates a `synth/` directory containing synthesis reports. We typically use the `.rpt` file as the official `csynth` report.
-<img width="988" height="1392" alt="image" src="https://github.com/user-attachments/assets/173184bb-ae72-4981-af1e-1ccfb196fac8" />
+<img width="250" height="350" alt="image" src="https://github.com/user-attachments/assets/173184bb-ae72-4981-af1e-1ccfb196fac8" />
 <img width="2926" height="1294" alt="image" src="https://github.com/user-attachments/assets/3d78c8c7-678e-4d95-9188-3d484c3d621a" />
 
 
@@ -140,7 +140,7 @@ Emulation tests the interaction between the host application and the compiled ke
     ```
 *   **⚠️ Note**: Hardware Emulation (`hw_emu`) is not recommended as it is significantly slower.
 *   **Success Condition**: The verification passes if you see the following output:
-<img width="1536" height="1104" alt="image" src="https://github.com/user-attachments/assets/7501995d-98c9-40ea-8006-f6b105ab01bd" />
+<img width="400" height="300" alt="image" src="https://github.com/user-attachments/assets/7501995d-98c9-40ea-8006-f6b105ab01bd" />
 
 ### 4. On-Board Execution
 
@@ -153,4 +153,4 @@ This is the final step: running the accelerator on the physical FPGA board.
     ```
 *   **⏱️ Important Note**: A full compilation from source takes **4-5 hours**. A pre-built bitstream is available in `./hw_end1/` and is used by the script for immediate testing.
 *   **⚙️ Configuration**: You can modify the host file (`./host/llama2.cpp`) to change modes (e.g., dialogue mode) and settings (e.g., temperature). 
-  <img width="841" height="214" alt="image" src="https://github.com/user-attachments/assets/bf5e65c9-e9bf-4498-892e-8c19244018ff" />
+ <img width="1268" height="292" alt="image" src="https://github.com/user-attachments/assets/e29c415a-3e3a-4156-bcc0-382ee52b1288" />
