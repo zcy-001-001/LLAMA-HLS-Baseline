@@ -1,17 +1,45 @@
 # [Tiny-llama-baseline]
 
 ## Table of Contents
-1.  [Getting Started](#-getting-started)
+1.  [Prerequisites](#-prerequisites)
+    *   [Step 1: Connect to the FPGA06 Server](#step-1-connect-to-the-fpga06-server)
+    *   [Step 2: Clone the Project Repository](#step-2-clone-the-project-repository)
+2.  [Getting Started](#-getting-started)
     *   [Step 1: Download Model & Tokenizer](#step-1-download-model--tokenizer)
     *   [Step 2: Set Up the FPGA Environment](#step-2-set-up-the-fpga-environment)
-2.  [Project Structure and File Descriptions](#-project-structure-and-file-descriptions)
-3.  [Development and Testing Workflow](#-development-and-testing-workflow)
+3.  [Project Structure and File Descriptions](#-project-structure-and-file-descriptions)
+4.  [Development and Testing Workflow](#-development-and-testing-workflow)
     *   [1. C Simulation (CSIM)](#1-c-simulation-csim)
     *   [2. C Synthesis (CSynth)](#2-c-synthesis-csynth)
     *   [3. Emulation (Software & Hardware)](#3-emulation-software--hardware)
     *   [4. On-Board Execution](#4-on-board-execution)
 
 ---
+
+## 🛠️ Prerequisites
+
+Before you begin, you need to connect to the remote server and clone the project repository.
+
+### Step 1: Connect to the FPGA06 Server
+
+Use SSH to connect to the server. The command varies slightly depending on your operating system.
+
+```
+For windows:
+ssh connect\your email perfix@10.92.254.209 
+For Linux/Mac:
+ssh connect\\your email perfix@10.92.254.209 
+
+For example, if my email is czhang539@connect.hkust-gz.edu.cn and I am using Windows, I would connect with ssh connect\czhang539@10.92.254.209.
+
+// Initial password is your campus email password
+// Please change your password after logging in(passwd)
+```
+### Step 2: Clone the Project Repository
+Once you are logged into the server, clone the specific Tiny-llama-baseline branch of the repository with the following command:
+```
+git clone -b Tiny-llama-baseline git@github.com:CLabGit/MICS-6001C-Labs.git
+```
 
 ## 🚀 Getting Started
 
