@@ -95,3 +95,5 @@ This project includes several shell scripts to automate the development and test
 *   `hardware_emulation.sh`: Runs the hardware emulation flow, simulating the compiled RTL in a hardware environment.
 *   `hardware_implement.sh`: Launches the full hardware implementation process (synthesis, place & route) to generate the bitstream (`.xclbin`).
 *   `run_inference.sh`: Executes the host application to run inference on the physical FPGA board.
+<img width="803" height="97" alt="image" src="https://github.com/user-attachments/assets/a2bdd019-3051-46b7-a7bb-abe90419407a" />
+
