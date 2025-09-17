@@ -39,6 +39,7 @@ For example, if my email is czhang539@connect.hkust-gz.edu.cn and I am using Win
 Once you are logged into the server, clone the specific Tiny-llama-baseline branch of the repository with the following command:
 ```
 git clone -b Tiny-llama-baseline git@github.com:CLabGit/MICS-6001C-Labs.git
+cd MICS-6001C-Labs
 ```
 
 ## 🚀 Getting Started
