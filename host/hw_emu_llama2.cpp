@@ -391,7 +391,7 @@ void generate(
     
   std::cout << "Loading kernel..." << std::endl;
   auto device = xrt::device(0);
-  auto uuid = device.load_xclbin("/home/CONNECT/czhang539/Tiny-llama-Baseline/hw_emu/forward_hw_emu.xclbin");
+  auto uuid = device.load_xclbin("../hw_emu/forward_hw_emu.xclbin");
   uuid = device.load_xclbin(kernelpath);
   
   
