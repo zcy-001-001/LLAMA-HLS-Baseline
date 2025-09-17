@@ -43,7 +43,7 @@ Simply run the following commands in your terminal:
 
 2.  **Execute the script** to load the required environment variables into your current session:
     ```sh
-    ./env.sh
+    source env.sh
     ```
 
 3.  **Verify the FPGA status** to ensure it's online and recognized:
