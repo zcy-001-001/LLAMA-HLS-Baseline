@@ -14,7 +14,8 @@
 #include <string>
 #include <time.h>
 #include "hls_stream.h" // HLS Stream header
-
+#include <string>
+#include <cstdlib> // 关键：包含这个头文件以使用 getenv
 // No XRT includes for csim
 #if defined _WIN32
 #include "win.h"
@@ -510,9 +511,11 @@ void read_stdin(const char *guide, char *buffer, size_t bufsize) { printf("%s", 
 int main(int argc, char *argv[]) {
     std::cout << "Start - Testbench for Split Kernels (Quantized)" << std::endl;
 
-    // --- Parameters with Defaults ---
-    std::string checkpoint_path = "../weights.bin"; // Default for CSIM
-    std::string tokenizer_path = "../tokenizer.bin"; // Default for CSIM
+    const char* basePathCStr = getenv("MODEL_BASE_PATH");
+    std::string model_base_path(basePathCStr);
+    std::string checkpoint_path =model_base_path+ "/weights.bin"; // Default for CSIM
+    std::string tokenizer_path = model_base_path+"/tokenizer.bin"; // Default for CSIM
+    
     float temperature = 0.0f; // Default to argmax (deterministic) for testing
     float topp = 0.9f;      // Top-p (not used if temp=0)
     int steps = seq_len;    // Default steps = max sequence length
