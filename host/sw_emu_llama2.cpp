@@ -391,7 +391,7 @@ void generate(
     
   std::cout << "Loading kernel..." << std::endl;
   auto device = xrt::device(0);
-  auto uuid = device.load_xclbin("/home/CONNECT/czhang539/Tiny-llama-Baseline/sw_emu/forward_sw_emu.xclbin");
+  auto uuid = device.load_xclbin("../sw_emu/forward_sw_emu.xclbin");
   uuid = device.load_xclbin(kernelpath);
   
   
@@ -593,8 +593,8 @@ int main(int argc, char *argv[]) {
     std::cout << "Start - Testbench for Split Kernels (Quantized)" << std::endl;
 
     // --- Parameters with Defaults ---
-    std::string checkpoint_path = "/home/CONNECT/czhang539/Tiny-llama-Baseline/weights.bin"; // Default for CSIM
-    std::string tokenizer_path = "/home/CONNECT/czhang539/Tiny-llama-Baseline/tokenizer.bin"; // Default for CSIM
+    std::string checkpoint_path = "../weights.bin"; // Default for CSIM
+    std::string tokenizer_path = "../tokenizer.bin"; // Default for CSIM
     float temperature = 0.0f; // Default to argmax (deterministic) for testing
     float topp = 0.9f;      // Top-p (not used if temp=0)
     int steps = seq_len;    // Default steps = max sequence length
