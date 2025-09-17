@@ -1,3 +1,17 @@
+# [Tiny-llama-baseline]
+
+## Table of Contents
+1.  [Getting Started](#-getting-started)
+    *   [Step 1: Download Model & Tokenizer](#step-1-download-model--tokenizer)
+    *   [Step 2: Set Up the FPGA Environment](#step-2-set-up-the-fpga-environment)
+2.  [Project Structure and File Descriptions](#-project-structure-and-file-descriptions)
+3.  [Development and Testing Workflow](#-development-and-testing-workflow)
+    *   [1. C Simulation (CSIM)](#1-c-simulation-csim)
+    *   [2. C Synthesis (CSynth)](#2-c-synthesis-csynth)
+    *   [3. Emulation (Software & Hardware)](#3-emulation-software--hardware)
+    *   [4. On-Board Execution](#4-on-board-execution)
+
+---
 
 ## 🚀 Getting Started
 
@@ -11,7 +25,6 @@ Before running the project, you need to download the necessary Tiny-llama model 
     *   [**Download Tiny-llama-weights & tokenizer**](https://drive.google.com/drive/folders/1FvHkoLoQnQGsKyIu0HaY4H8_4-qd7Ilb?usp=drive_link)
 
 2.  **Place the files** in a directory named `Tiny-llama-baseline` located in your home directory.
-
     *   For **Linux/macOS**, the path should be `~/Tiny-llama-baseline/`.
     *   For **Windows**, the path should be `C:\Users\<YourUsername>\Tiny-llama-baseline\`.
 
@@ -38,6 +51,8 @@ Simply run the following commands in your terminal:
     xbmgmt examine
     ```
     You should see output detailing the status of your connected FPGA board.
+
+---
 
 ## 📂 Project Structure and File Descriptions
 
@@ -71,29 +86,71 @@ This directory holds the configuration file for Vitis HLS synthesis.
 This is the most crucial directory, containing the core HLS source code for the accelerator.
 
 *   `config.h` & `typedefs.h`: Define the model's parameters, including `dim`, `hidden_dim`, `num_layers`, etc. **No modifications are typically needed here.**
-
 *   `forward.cpp`: The top-level file that defines the network's forward pass architecture, including the embedding layer and transformer blocks. **This is a primary file for performance optimization.**
-
 *   `forward.h`: Defines all sub-functions used in the Llama2 model, such as quantization/de-quantization, GEMV, and various non-linear activation functions. **This is another key area for optimization.**
-
 *   `tb_llama2_csim.cpp`: The testbench for C simulation. If you change the ports of the top-level module (`forward.cpp`), you must update this file to match.
-
 *   `u55C1.cfg`: The Vitis linker configuration file. It connects the kernel's memory interfaces (AXI ports) to specific HBM channels. You can modify this file to **optimize memory access patterns and bandwidth.**
-
 *   `independent_kernal/`: A subdirectory containing the source files specifically configured for software emulation (`sw_emu`).
 
 ### `./sw_emu/`
 This directory contains configuration files required for the software emulation flow.
 
-## 🛠️ Workflow Scripts
+---
 
-This project includes several shell scripts to automate the development and testing workflow.
+## ✅ Development and Testing Workflow
 
-*   `csim.sh`: Runs C simulation to verify the functional correctness of the C/C++ source code.
-*   `csynth.sh`: Runs C synthesis using Vitis HLS to generate RTL from the C/C++ source.
-*   `software_emulation.sh`: Runs the software emulation flow, which compiles the kernel for x86 and runs it with the host application.
-*   `hardware_emulation.sh`: Runs the hardware emulation flow, simulating the compiled RTL in a hardware environment.
-*   `hardware_implement.sh`: Launches the full hardware implementation process (synthesis, place & route) to generate the bitstream (`.xclbin`).
-*   `run_inference.sh`: Executes the host application to run inference on the physical FPGA board.
-<img width="803" height="97" alt="image" src="https://github.com/user-attachments/assets/a2bdd019-3051-46b7-a7bb-abe90419407a" />
+Follow this step-by-step guide to verify, synthesize, and deploy the accelerator.
 
+### 1. C Simulation (CSIM)
+
+First, verify the functional correctness of the HLS C++ code.
+
+*   **Action**: Run the `csim.sh` script.
+    ```sh
+    ./csim.sh
+    ```
+*   **Success Condition**: The script will complete successfully, indicating that the C++ code is functionally correct. The successful functional verification is shown below:
+   <img width="2914" height="346" alt="image" src="https://github.com/user-attachments/assets/87f1797c-bcc6-4ab5-8704-02fc9f8d22d8" />
+
+### 2. C Synthesis (CSynth)
+
+After functional verification, run C-synthesis to get a preliminary report on resources and latency.
+
+*   **Action**: Run the `csynth.sh` script.
+    ```sh
+    ./csynth.sh
+    ```
+*   **Execution Time**: This process takes approximately 15 minutes.
+*   **Output**: The script generates a `synth/` directory containing synthesis reports. We typically use the `.rpt` file as the official `csynth` report.
+<img width="988" height="1392" alt="image" src="https://github.com/user-attachments/assets/173184bb-ae72-4981-af1e-1ccfb196fac8" />
+<img width="2926" height="1294" alt="image" src="https://github.com/user-attachments/assets/3d78c8c7-678e-4d95-9188-3d484c3d621a" />
+
+
+### 3. Emulation (Software & Hardware)
+
+Emulation tests the interaction between the host application and the compiled kernel without needing to build the full hardware bitstream.
+
+*   **Action**: You can run `software_emulation.sh` or `hardware_emulation.sh`.
+    ```sh
+    # For Software Emulation (Recommended)
+    ./software_emulation.sh
+
+    # For Hardware Emulation
+    ./hardware_emulation.sh
+    ```
+*   **⚠️ Note**: Hardware Emulation (`hw_emu`) is not recommended as it is significantly slower.
+*   **Success Condition**: The verification passes if you see the following output:
+<img width="1536" height="1104" alt="image" src="https://github.com/user-attachments/assets/7501995d-98c9-40ea-8006-f6b105ab01bd" />
+
+### 4. On-Board Execution
+
+This is the final step: running the accelerator on the physical FPGA board.
+
+*   **Prerequisite**: Functionality, resource, and latency verifications from previous steps are all successful.
+*   **Action**: Run the `run_inference.sh` script.You can see the video in our slides.
+    ```sh
+    ./run_inference.sh
+    ```
+*   **⏱️ Important Note**: A full compilation from source takes **4-5 hours**. A pre-built bitstream is available in `./hw_end1/` and is used by the script for immediate testing.
+*   **⚙️ Configuration**: You can modify the host file (`./host/llama2.cpp`) to change modes (e.g., dialogue mode) and settings (e.g., temperature). 
+  <img width="841" height="214" alt="image" src="https://github.com/user-attachments/assets/bf5e65c9-e9bf-4498-892e-8c19244018ff" />
