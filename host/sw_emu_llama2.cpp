@@ -16,6 +16,8 @@
 #include <xrt/xrt_bo.h>
 #include <xrt/xrt_device.h>
 #include <xrt/xrt_kernel.h>
+#include <string>
+#include <cstdlib> // 关键：包含这个头文件以使用 getenv
 #if defined _WIN32
 #include "win.h"
 #else
@@ -388,11 +390,16 @@ void generate(
     if (!tokens) { fprintf(stderr, "malloc failed for tokens\n"); free(prompt_tokens); exit(EXIT_FAILURE); }
     memcpy(tokens, prompt_tokens, num_prompt_tokens * sizeof(int));
     free(prompt_tokens); // Free temporary prompt buffer
-    
+
+  const char* basePathCStr = getenv("MODEL_BASE_PATH");
+  std::string model_base_path(basePathCStr);
+  std::string xclbin_path =model_base_path+ "/sw_emu/forward_sw_emu.xclbin"; // Default for CSIM
+  
   std::cout << "Loading kernel..." << std::endl;
   auto device = xrt::device(0);
-  auto uuid = device.load_xclbin("../sw_emu/forward_sw_emu.xclbin");
+  auto uuid = device.load_xclbin(xclbin_path);
   uuid = device.load_xclbin(kernelpath);
+
   
   
   
@@ -592,9 +599,10 @@ void error_usage()
 int main(int argc, char *argv[]) {
     std::cout << "Start - Testbench for Split Kernels (Quantized)" << std::endl;
 
-    // --- Parameters with Defaults ---
-    std::string checkpoint_path = "../weights.bin"; // Default for CSIM
-    std::string tokenizer_path = "../tokenizer.bin"; // Default for CSIM
+    const char* basePathCStr = getenv("MODEL_BASE_PATH");
+    std::string model_base_path(basePathCStr);
+    std::string checkpoint_path =model_base_path+ "/weights.bin"; // Default for CSIM
+    std::string tokenizer_path = model_base_path+"/tokenizer.bin"; // Default for CSIM
     float temperature = 0.0f; // Default to argmax (deterministic) for testing
     float topp = 0.9f;      // Top-p (not used if temp=0)
     int steps = seq_len;    // Default steps = max sequence length
